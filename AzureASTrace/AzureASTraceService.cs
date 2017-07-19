@@ -41,7 +41,7 @@ namespace AzureASTrace
 
         public void StopConsole()
         {
-            this.OnStop();            
+            this.OnStop();
         }
 
         protected override void OnStart(string[] args)
@@ -58,7 +58,7 @@ namespace AzureASTrace
 
                 // Setup AS Connection
 
-                this.conn = GetASConnection();                
+                this.conn = GetASConnection();
 
                 this.traceId = SetupTrace();
 
@@ -79,17 +79,17 @@ namespace AzureASTrace
             {
                 path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, path.Remove(0, 2));
             }
-            
+
             return path;
         }
 
         private void SubscribeTrace(string traceId)
         {
             this.tokenSource = new CancellationTokenSource();
-                        
+
             this.workerTask = new Task(AsyncTraceReader, this.tokenSource.Token);
 
-            this.workerTask.Start();             
+            this.workerTask.Start();
         }
 
         private void AsyncTraceReader()
@@ -105,9 +105,9 @@ namespace AzureASTrace
                         break;
                     }
 
-                    Logger.Log($"Subscribing Trace: {traceId}");                    
+                    Logger.Log($"Subscribing Trace: {traceId}");
 
-                    if(conn.State != ConnectionState.Open)
+                    if (conn.State != ConnectionState.Open)
                     {
                         conn.Open();
                     }
@@ -134,30 +134,35 @@ namespace AzureASTrace
                                             break;
                                         }
 
-                                        Logger.Debug($"{evt.Name} event received");                                                                 
+                                        Logger.Debug($"{evt.Name} event received");
 
                                         var eventId = Guid.NewGuid().ToString("N");
 
                                         var json = ConvertXEventToJSON(evt);
 
-                                        var outputFile = Path.Combine(outputFolder, evt.Name, string.Concat(eventId, ".json"));
+                                        var folder = Path.Combine(outputFolder, DateTime.Now.ToString("yyyyMMdd"));
+                                        Directory.CreateDirectory(folder);
+
+                                        //Writing to .jsonl file  http://jsonlines.org/
+                                        var outputFile = Path.Combine(folder, string.Concat(evt.Name, ".jsonl"));
 
                                         var jsonStr = json.ToString(Newtonsoft.Json.Formatting.None);
-                                        
-                                        FileHelper.WriteAllTextAndEnsureFolder(outputFile, jsonStr);
+
+                                        File.AppendAllLines(outputFile, new string[] { jsonStr });
+
                                     }
-                                    catch(Exception ex)
+                                    catch (Exception ex)
                                     {
                                         Logger.Error(ex, "Error on QueryableXEventData");
-                                    }                                                                                                                                
+                                    }
                                 }
 
                                 Logger.Log("Trace stopped");
                             }
                         }
-                    }                    
-                }   
-                catch(Exception ex)
+                    }
+                }
+                catch (Exception ex)
                 {
                     Logger.Error(ex);
                 }
@@ -183,19 +188,19 @@ namespace AzureASTrace
 
             var fields = new JObject();
 
-            foreach(PublishedEventField field in evt.Fields)
+            foreach (PublishedEventField field in evt.Fields)
             {
                 fields.Add(field.Name, JToken.FromObject(field.Value));
             }
-            
-            json.Add("Fields", fields);            
+
+            json.Add("Fields", fields);
 
             return json;
         }
 
         private List<dynamic> GetActiveTraces()
         {
-            var list = DBHelper.ExecuteCommand<List<dynamic>>(this.conn, "select TraceId, CreationTime, StopTime, [Type] from $system.discover_traces");            
+            var list = DBHelper.ExecuteCommand<List<dynamic>>(this.conn, "select TraceId, CreationTime, StopTime, [Type] from $system.discover_traces");
 
             return list;
         }
@@ -215,9 +220,9 @@ namespace AzureASTrace
             // Delete the Trace if one already exists with the same name
 
             var activeTraces = GetActiveTraces();
-                        
-            if (activeTraces.Any(s => traceId.EqualsCI((string)s.TraceId))) 
-            {                
+
+            if (activeTraces.Any(s => traceId.EqualsCI((string)s.TraceId)))
+            {
                 DeleteTrace(traceId, this.conn);
             }
 
@@ -234,7 +239,7 @@ namespace AzureASTrace
                 throw new ArgumentNullException("traceId");
 
             var startedConnection = false;
-                 
+
             try
             {
 
@@ -246,14 +251,14 @@ namespace AzureASTrace
                 {
                     conn = GetASConnection();
                     startedConnection = true;
-                }                
+                }
 
                 var deleteTraceCmd = $@"<Delete xmlns=""http://schemas.microsoft.com/analysisservices/2003/engine"">
                               <Object>
                                 <TraceID>{traceId}</TraceID>
                               </Object>
                             </Delete>";
-                
+
                 DBHelper.ExecuteCommand<int>(conn, deleteTraceCmd);
             }
             catch (Exception ex)
@@ -295,7 +300,7 @@ namespace AzureASTrace
                     // Wait for the task for 30s
                     this.workerTask.Wait(30000);
                 }
-                
+
                 if (!string.IsNullOrEmpty(this.traceId))
                 {
                     this.DeleteTrace(this.traceId);
