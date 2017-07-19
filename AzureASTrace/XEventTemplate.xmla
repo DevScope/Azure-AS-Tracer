@@ -1,0 +1,15 @@
+<Create xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ObjectDefinition>
+    <Trace>
+      <ID>AzureASTracer</ID>
+      <Name>AzureASTracer</Name>
+	  <AutoRestart>true</AutoRestart>
+      <XEvent xmlns="http://schemas.microsoft.com/analysisservices/2011/engine/300/300">
+        <event_session name="AzureASTracer" dispatchLatency="0" maxEventSize="0" maxMemory="4" memoryPartition="none" eventRetentionMode="AllowSingleEventLoss" trackCausality="true" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+          <event package="AS" name="QueryEnd" />      
+		  <target package="package0" name="event_stream" />
+        </event_session>
+      </XEvent>
+    </Trace>
+  </ObjectDefinition>
+</Create>
