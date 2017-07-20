@@ -1,5 +1,9 @@
 # Azure-AS-Tracer
 
+A windows service / console application to create & subscribe to Analysis Services XEvents and save them on disk in JSON format.
+
+Although it was created for Azure Analysis Services it also work well with SQL Server Analysis Services.
+
 ## Install & Run
 
 * Download \dist folder
