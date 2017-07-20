@@ -4,6 +4,8 @@ A windows service / console application to create & subscribe to Analysis Servic
 
 Although it was created for Azure Analysis Services it also work well with SQL Server Analysis Services.
 
+Usage info: https://devscopebi.wordpress.com/2017/07/20/azure-analysis-services-tracer-aka-azureastrace-exe/
+
 ## Install & Run
 
 * Download \dist folder
