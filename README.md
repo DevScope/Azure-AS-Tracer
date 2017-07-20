@@ -14,6 +14,8 @@ Although it was created for Azure Analysis Services it also work well with SQL S
 
 * Start the Windows Service
 
+* Change the XEvent trace template - Optional
+
 ## Run in Console Mode
 
 Simply execute AzureASTrace.exe
