@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevScope.Framework.Common.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -13,21 +14,36 @@ namespace AzureASTrace
         /// </summary>
         static void Main(string[] args)
         {
-
-            var service = new AzureASTraceService();
-           
-            if (Environment.UserInteractive)
+            try
             {
-                service.StartConsole(args);
-                Console.WriteLine("Press any key to stop program");
-                Console.Read();
-                service.StopConsole();
-            }
-            else
-            {
-                ServiceBase.Run(service);
-            }
+                Logger.CurrentLogger = new NLogLogger();
 
+                var service = new AzureASTraceService();
+
+                if (Environment.UserInteractive)
+                {
+                    Logger.Log("Running Mode: Console");
+
+                    service.StartConsole(args);
+
+                    Console.WriteLine("...............................................");
+                    Console.WriteLine("........ Press any key to stop program ........");
+                    Console.WriteLine("...............................................");
+                    Console.Read();
+
+                    service.StopConsole();
+                }
+                else
+                {
+                    Logger.Log("Running Mode: Service");
+
+                    ServiceBase.Run(service);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }            
         }
     }
 }

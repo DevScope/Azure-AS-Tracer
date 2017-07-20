@@ -3,20 +3,16 @@ using DevScope.Framework.Common.Utils;
 using Microsoft.AnalysisServices.AdomdClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using System.Xml.Linq;
 using DevScope.Framework.Common.Extensions;
 using System.Xml;
 using Microsoft.SqlServer.XEvent.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AzureASTrace
@@ -47,9 +43,7 @@ namespace AzureASTrace
         protected override void OnStart(string[] args)
         {
             try
-            {
-                Logger.CurrentLogger = new NLogLogger();
-
+            {              
                 Logger.Log("Service Started");
 
                 this.currentFolder = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -135,8 +129,6 @@ namespace AzureASTrace
                                         }
 
                                         Logger.Debug($"{evt.Name} event received");
-
-                                        var eventId = Guid.NewGuid().ToString("N");
 
                                         var json = ConvertXEventToJSON(evt);
 

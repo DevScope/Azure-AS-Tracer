@@ -1,6 +1,6 @@
 # Azure-AS-Tracer
 
-Install:
+## Install & Run
 
 * Download \dist folder
 
@@ -9,3 +9,12 @@ Install:
 * Change the Analysis Services connection string on 'AzureASTrace.exe.config'
 
 * Start the Windows Service
+
+## Run in Console Mode
+
+Simply execute AzureASTrace.exe
+
+## Output
+
+Trace events will be stored in the output folder (configurable) as JSONL files organized by Date and Event Type.
+
