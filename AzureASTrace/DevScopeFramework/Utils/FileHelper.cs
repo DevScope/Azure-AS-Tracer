@@ -27,7 +27,7 @@ namespace DevScope.Framework.Common.Utils
 
         public static void EnsureFolder(string folder)
         {
-            if (Directory.Exists(folder))
+            if (!Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
             }
