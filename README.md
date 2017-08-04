@@ -1,5 +1,11 @@
 # Azure-AS-Tracer
 
+A windows service / console application to create & subscribe to Analysis Services XEvents and save them on disk in JSON format.
+
+Although it was created for Azure Analysis Services it also work well with SQL Server Analysis Services.
+
+Usage info: https://devscopebi.wordpress.com/2017/07/20/azure-analysis-services-tracer-aka-azureastrace-exe/
+
 ## Install & Run
 
 * Download \dist folder
@@ -9,6 +15,8 @@
 * Change the Analysis Services connection string on 'AzureASTrace.exe.config'
 
 * Start the Windows Service
+
+* Change the XEvent trace template - Optional
 
 ## Run in Console Mode
 
