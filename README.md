@@ -26,3 +26,8 @@ Simply execute AzureASTrace.exe
 
 Trace events will be stored in the output folder (configurable) as JSONL files organized by Date and Event Type.
 
+## Power BI
+
+Use the Power BI Template (.\PowerBI\AzureASTrace.pbit) to analyse the trace output
+
+![Parameters(/images/PowerBI.TemplateParameter.png)
