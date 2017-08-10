@@ -28,7 +28,7 @@ Trace events will be stored in the output folder (configurable) as JSONL files o
 
 ## Power BI
 
-Use the Power BI Template (.\PowerBI\AzureASTrace.pbit) to analyse the trace output
+Use the [Power BI Template](https://github.com/DevScope/Azure-AS-Tracer/blob/master/PowerBI/AzureASTrace.pbit) to analyse the trace output files:
 
 ![](https://github.com/DevScope/Azure-AS-Tracer/blob/master/images/PowerBI.DataFiles.png)
 
